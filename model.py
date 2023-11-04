@@ -128,3 +128,36 @@ print('F1 Score for Logistic Regression:', f1_score_lr)
 
 cv_lr = cross_val_score(lr, x, y, cv=5)
 print("Cross_val_score for Logistic Regression:  ", np.mean(cv_lr))
+
+
+x_train_temp, x_unseen, y_train_temp, y_unseen = train_test_split(x_bal, y_bal, test_size=0.1, random_state=42) # 10% for unseen
+x_train, x_test, y_train, y_test = train_test_split(x_train_temp, y_train_temp, test_size=0.37, random_state=42) # further split to maintain total test size close to 33%
+
+# ... [your models training and evaluation remains unchanged]
+
+# Now, prediction on unseen data for RandomForest
+yPred_unseen = rf.predict(x_unseen)
+print("****RandomForestClassifier on Unseen Data****") 
+print("Confusion matrix")
+print(confusion_matrix(y_unseen, yPred_unseen)) 
+print("Classification report")
+print(classification_report(y_unseen, yPred_unseen))
+print("Accuracy on unseen data: ", accuracy_score(y_unseen, yPred_unseen))
+
+# Prediction on unseen data for SVM
+y_pred_svm_unseen = svm.predict(x_unseen)
+print("****Support Vector Machine on Unseen Data****")
+print("Confusion matrix")
+print(confusion_matrix(y_unseen, y_pred_svm_unseen))
+print("Classification report")
+print(classification_report(y_unseen, y_pred_svm_unseen))
+print("Accuracy on unseen data: ", accuracy_score(y_unseen, y_pred_svm_unseen))
+
+# Prediction on unseen data for Logistic Regression
+y_pred_lr_unseen = lr.predict(x_unseen)
+print("****Logistic Regression on Unseen Data****")
+print("Confusion matrix")
+print(confusion_matrix(y_unseen, y_pred_lr_unseen))
+print("Classification report")
+print(classification_report(y_unseen, y_pred_lr_unseen))
+print("Accuracy on unseen data: ", accuracy_score(y_unseen, y_pred_lr_unseen))
